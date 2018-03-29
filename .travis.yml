@@ -5,4 +5,12 @@ cache:
   directories:
     - node_modules
 script:
-  - npm run deploy
+  - npm run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: build
+  taget-branch: gh-pages
+  on:
+    branch: master 
