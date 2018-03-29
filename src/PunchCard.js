@@ -7,26 +7,28 @@ class PunchCard extends Component {
     super(props);
     this.state = {
       instructionCounter: 0,
-      instructions: [<Instruction key={0}/>]
+      instructions: [<Instruction key={0} index={0} />]
     };
   }
 
   addInstruction() {
     const counter = this.state.instructionCounter + 1;
-    const instr = <Instruction key={counter} />;
+    const newInstr = <Instruction key={counter} index={counter} />;
     const oldInstr = this.state.instructions.slice();
     this.setState({
       instructionCounter: counter,
-      instructions: oldInstr.concat([instr])
+      instructions: oldInstr.concat([newInstr])
     });
   }
 
   removeInstruction() {
+    const counter = this.state.instructionCounter - 1;
     const oldInstr = this.state.instructions;
     if (oldInstr === null || oldInstr.length === 0) {
       return;
     }
     this.setState({
+      instructionCounter: counter,
       instructions: oldInstr.slice(0, oldInstr.length - 1)
     });
   }
@@ -43,6 +45,7 @@ class PunchCard extends Component {
         <table>
           <thead>
             <tr>
+              <td />
               <td>IE</td>
               <td>Interrupt</td>
               <td>kmux</td>

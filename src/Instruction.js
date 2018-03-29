@@ -16,7 +16,7 @@ const options = {
   cin: ["X", "CI0", "CI1", "CIX", "CIC"],
   shift: ["X"],
   cemue: ["X", "H", "L"],
-  cem: ["X", "E", "L"],
+  cem: ["X", "H", "L"],
   status: [
     "X",
     "LOAD",
@@ -47,6 +47,7 @@ class Instruction extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      index: props.index === undefined ? 0 : props.index,
       ie: "DIS",
       interrupt: "X",
       kmux: "X",
@@ -62,8 +63,8 @@ class Instruction extends Component {
       dbus: "H",
       cin: "CI0",
       shift: "X",
-      cemue: "X",
-      cem: "X",
+      cemue: "H",
+      cem: "H",
       status: "X",
       ccen: "X",
       am2910: "CONT",
@@ -83,11 +84,21 @@ class Instruction extends Component {
     this.setState(obj);
   }
 
+  hexString(number) {
+      return "0x" + number.toString(16).toUpperCase();
+  }
+
   render() {
     var fields = [];
     for (const key of Object.keys(this.state)) {
       const option = options[key];
-      if (option !== undefined) {
+      if (key === "index") {
+        fields.push(
+          <td key={key}>
+            <small>{this.hexString(this.state.index)}</small>
+          </td>
+        );
+      } else if (option !== undefined) {
         const selectOptions = option.map((v, i) => (
           <option key={i} value={v}>
             {v}
