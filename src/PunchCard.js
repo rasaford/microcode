@@ -4,6 +4,7 @@ import Instruction from "./Instruction.js";
 
 class Instr {
   constructor(index) {
+    // defaults for an instruction
     this.data = {
       index: index,
       ie: "DIS",
@@ -35,10 +36,6 @@ class Instr {
       mwe: "R"
     };
   }
-
-  handleChange(key, value) {
-    this.data[key] = value;
-  }
 }
 
 class PunchCard extends Component {
@@ -51,6 +48,14 @@ class PunchCard extends Component {
     };
   }
 
+  handleChange(index, key, value) {
+    let instr = this.state.instructions.slice();
+    instr[index].data[key] = value;
+    this.setState({
+      instructions: instr
+    });
+  }
+
   renderInstruction(instruction) {
     let index = instruction.data.index;
     let selected = index === this.state.currentInstruction;
@@ -59,7 +64,7 @@ class PunchCard extends Component {
         key={index}
         data={instruction.data}
         selected={selected}
-        onChange={instruction.handleChange}
+        onChange={(key, value) => this.handleChange(index, key, value)}
       />
     );
   }
@@ -86,12 +91,18 @@ class PunchCard extends Component {
     });
   }
 
-  run() {
+  step() {
     this.setState({
       currentInstruction: Math.min(
         this.state.currentInstruction + 1,
         this.state.instructions.length - 1
       )
+    });
+  }
+
+  reset() {
+    this.setState({
+      currentInstruction: 0
     });
   }
 
@@ -104,11 +115,19 @@ class PunchCard extends Component {
         <button onClick={() => this.removeInstruction()} value="REMOVE">
           -
         </button>
-        <button onClick={() => this.run()} value="RUN">
-          Run
+        <button onClick={() => this.step()} value="STEP">
+          Step
+        </button>
+        <button onClick={() => this.reset()} value="RESET">
+          Reset
         </button>
         <table>
-          <thead>
+          <thead
+            style={{
+              transform: "rotate(90 deg)",
+              transformOrigin: "left top 0"
+            }}
+          >
             <tr>
               <td />
               <td>IE</td>
@@ -141,7 +160,7 @@ class PunchCard extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.instructions.map(v => this.renderInstruction(v))}
+            {this.state.instructions.map(i => this.renderInstruction(i))}
           </tbody>
         </table>
       </div>

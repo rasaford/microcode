@@ -44,49 +44,48 @@ const options = {
   mwe: ["X", "R", "W"]
 };
 
-class Instruction extends Component {
-  toHexString(number) {
-    return "0x" + number.toString(16).toUpperCase();
-  }
-
-  render() {
-    let fields = [];
-    let data = this.props.data;
-    for (const key of Object.keys(data)) {
-      let element = null;
-      if (key === "index") {
-        element = <small>{this.toHexString(data.index)}</small>;
-      } else if (options[key] !== undefined) {
-        const selectOptions = options[key].map((v, i) => (
-          <option key={i} value={v}>
-            {v}
-          </option>
-        ));
-        element = (
-          <select
-            value={data[key]}
-            onChange={event => this.props.onChange(key, event.target.value)}
-          >
-            {selectOptions}
-          </select>
-        );
-      } else {
-        var type = typeof data[key] === "number" ? "number" : "text";
-        element = (
-          <input
-            value={data[key]}
-            type={type}
-            onChange={event => this.props.onChange(key, event.target.value)}
-          />
-        );
-      }
-      fields.push(<td key={key}>{element}</td>);
+function Instruction(props) {
+  let fields = [];
+  let data = props.data;
+  for (const key of Object.keys(data)) {
+    let element = null;
+    if (key === "index") {
+      element = <small>{toHexString(data.index)}</small>;
+    } else if (options[key] !== undefined) {
+      const selectOptions = options[key].map((v, i) => (
+        <option key={i} value={v}>
+          {v}
+        </option>
+      ));
+      element = (
+        <select
+          value={data[key]}
+          onChange={event => props.onChange(key, event.target.value)}
+        >
+          {selectOptions}
+        </select>
+      );
+    } else {
+      var type = typeof data[key] === "number" ? "number" : "text";
+      element = (
+        <input
+          value={data[key]}
+          type={type}
+          onChange={event => props.onChange(key, event.target.value)}
+        />
+      );
     }
-    let bgColor = {
-      backgroundColor: this.props.selected ? "green" : "none"
-    };
-    return <tr style={bgColor}>{fields}</tr>;
+    fields.push(<td key={key}>{element}</td>);
   }
+  let style = {};
+  if (props.selected) {
+    style.backgroundColor = "green";
+  }
+  return <tr style={style}>{fields}</tr>;
+}
+
+function toHexString(number) {
+  return "0x" + number.toString(16).toUpperCase();
 }
 
 export default Instruction;
