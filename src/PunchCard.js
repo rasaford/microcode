@@ -2,18 +2,71 @@ import React, { Component } from "react";
 import "./App.css";
 import Instruction from "./Instruction.js";
 
+class Instr {
+  constructor(index) {
+    this.data = {
+      index: index,
+      ie: "DIS",
+      interrupt: "X",
+      kmux: "X",
+      constant: 0,
+      src: "X",
+      func: "X",
+      dest: "NOP",
+      ra_addr: "X",
+      asel: "X",
+      rb_addr: "X",
+      bsel: "X",
+      abus: "H",
+      dbus: "H",
+      cin: "CI0",
+      shift: "X",
+      cemue: "H",
+      cem: "H",
+      status: "X",
+      ccen: "X",
+      am2910: "CONT",
+      direct: "X",
+      bz_ld: "H",
+      bz_ed: "H",
+      bz_inc: "H",
+      bz_ea: "H",
+      ir_ld: "H",
+      mwe: "R"
+    };
+  }
+
+  handleChange(key, value) {
+    this.data[key] = value;
+  }
+}
+
 class PunchCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentInstruction: 0,
       instructionCounter: 0,
-      instructions: [<Instruction key={0} index={0} />]
+      instructions: [new Instr(0)]
     };
+  }
+
+  renderInstruction(instruction) {
+    let index = instruction.data.index;
+    let selected = index === this.state.currentInstruction;
+    return (
+      <Instruction
+        key={index}
+        data={instruction.data}
+        selected={selected}
+        onChange={instruction.handleChange}
+      />
+    );
   }
 
   addInstruction() {
     const counter = this.state.instructionCounter + 1;
-    const newInstr = <Instruction key={counter} index={counter} />;
+    const newInstr = new Instr(counter);
     const oldInstr = this.state.instructions.slice();
     this.setState({
       instructionCounter: counter,
@@ -33,6 +86,15 @@ class PunchCard extends Component {
     });
   }
 
+  run() {
+    this.setState({
+      currentInstruction: Math.min(
+        this.state.currentInstruction + 1,
+        this.state.instructions.length - 1
+      )
+    });
+  }
+
   render() {
     return (
       <div>
@@ -41,6 +103,9 @@ class PunchCard extends Component {
         </button>
         <button onClick={() => this.removeInstruction()} value="REMOVE">
           -
+        </button>
+        <button onClick={() => this.run()} value="RUN">
+          Run
         </button>
         <table>
           <thead>
@@ -75,7 +140,9 @@ class PunchCard extends Component {
               <td>MWE</td>
             </tr>
           </thead>
-          <tbody>{this.state.instructions}</tbody>
+          <tbody>
+            {this.state.instructions.map(v => this.renderInstruction(v))}
+          </tbody>
         </table>
       </div>
     );

@@ -43,91 +43,49 @@ const options = {
   ir_ld: ["X", "H", "L"],
   mwe: ["X", "R", "W"]
 };
+
 class Instruction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: props.index === undefined ? 0 : props.index,
-      ie: "DIS",
-      interrupt: "X",
-      kmux: "X",
-      constant: 0,
-      src: "X",
-      func: "X",
-      dest: "NOP",
-      ra_addr: "X",
-      asel: "X",
-      rb_addr: "X",
-      bsel: "X",
-      abus: "H",
-      dbus: "H",
-      cin: "CI0",
-      shift: "X",
-      cemue: "H",
-      cem: "H",
-      status: "X",
-      ccen: "X",
-      am2910: "CONT",
-      direct: "X",
-      bz_ld: "H",
-      bz_ed: "H",
-      bz_inc: "H",
-      bz_ea: "H",
-      ir_ld: "H",
-      mwe: "R"
-    };
-  }
-
-  selectOption(event, key) {
-    var obj = {};
-    obj[key] = event.target.value;
-    this.setState(obj);
-  }
-
-  hexString(number) {
-      return "0x" + number.toString(16).toUpperCase();
+  toHexString(number) {
+    return "0x" + number.toString(16).toUpperCase();
   }
 
   render() {
-    var fields = [];
-    for (const key of Object.keys(this.state)) {
-      const option = options[key];
+    let fields = [];
+    let data = this.props.data;
+    for (const key of Object.keys(data)) {
+      let element = null;
       if (key === "index") {
-        fields.push(
-          <td key={key}>
-            <small>{this.hexString(this.state.index)}</small>
-          </td>
-        );
-      } else if (option !== undefined) {
-        const selectOptions = option.map((v, i) => (
+        element = <small>{this.toHexString(data.index)}</small>;
+      } else if (options[key] !== undefined) {
+        const selectOptions = options[key].map((v, i) => (
           <option key={i} value={v}>
             {v}
           </option>
         ));
-        fields.push(
-          <td key={key}>
-            <select
-              value={this.state[key]}
-              onChange={event => this.selectOption(event, key)}
-            >
-              {selectOptions}
-            </select>
-          </td>
+        element = (
+          <select
+            value={data[key]}
+            onChange={event => this.props.onChange(key, event.target.value)}
+          >
+            {selectOptions}
+          </select>
         );
       } else {
-        var type = typeof this.state[key] === "number" ? "number" : "text";
-        fields.push(
-          <td key={key}>
-            <input
-              value={this.state[key]}
-              type={type}
-              onChange={event => this.selectOption(event, key)}
-            />
-          </td>
+        var type = typeof data[key] === "number" ? "number" : "text";
+        element = (
+          <input
+            value={data[key]}
+            type={type}
+            onChange={event => this.props.onChange(key, event.target.value)}
+          />
         );
       }
+      fields.push(<td key={key}>{element}</td>);
     }
-    return <tr>{fields}</tr>;
+    let bgColor = {
+      backgroundColor: this.props.selected ? "green" : "none"
+    };
+    return <tr style={bgColor}>{fields}</tr>;
   }
 }
 
