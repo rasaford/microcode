@@ -122,41 +122,36 @@ class PunchCard extends Component {
           Reset
         </button>
         <table>
-          <thead
-            style={{
-              transform: "rotate(90 deg)",
-              transformOrigin: "left top 0"
-            }}
-          >
+          <thead>
             <tr>
-              <td />
-              <td>IE</td>
-              <td>Interrupt</td>
-              <td>kmux</td>
-              <td>Constant</td>
-              <td>Source</td>
-              <td>Function</td>
-              <td>Destination</td>
-              <td>RA Address</td>
-              <td>A Select</td>
-              <td>RB Address</td>
-              <td>B Select</td>
-              <td>A bus</td>
-              <td>D Bus</td>
-              <td>CIN MUX</td>
-              <td>Shift</td>
-              <td>cemue</td>
-              <td>cem</td>
-              <td>status register</td>
-              <td>ccen</td>
-              <td>am2910</td>
-              <td>direct data</td>
-              <td>BZ_LD</td>
-              <td>BZ_ED</td>
-              <td>BZ_INC</td>
-              <td>BZ_EA</td>
-              <td>IR_LD</td>
-              <td>MWE</td>
+              <th />
+              <th>IE</th>
+              <th>Interrupt</th>
+              <th>kmux</th>
+              <th>Constant</th>
+              <th>Source</th>
+              <th>Function</th>
+              <th>Destination</th>
+              <th>RA Address</th>
+              <th>A Select</th>
+              <th>RB Address</th>
+              <th>B Select</th>
+              <th>A bus</th>
+              <th>D Bus</th>
+              <th>CIN MUX</th>
+              <th>Shift</th>
+              <th>cemue</th>
+              <th>cem</th>
+              <th>status register</th>
+              <th>ccen</th>
+              <th>am2910</th>
+              <th>direct data</th>
+              <th>BZ_LD</th>
+              <th>BZ_ED</th>
+              <th>BZ_INC</th>
+              <th>BZ_EA</th>
+              <th>IR_LD</th>
+              <th>MWE</th>
             </tr>
           </thead>
           <tbody>
