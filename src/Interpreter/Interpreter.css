@@ -1,0 +1,15 @@
+.memory {
+  float: left;
+}
+.memory tbody {
+  height: 400px;
+  width: 100px;
+  overflow: auto;
+}
+.memory thead > tr, .memory tbody {
+    display: block;
+}
+
+.display {
+    height: 500px;
+}
