@@ -48,7 +48,7 @@ class Memory extends Component {
   render() {
     return (
       <div className="memory">
-      <em>Memory</em>
+        <h3>Memory</h3>
         <table>
           <thead>
             <tr>
